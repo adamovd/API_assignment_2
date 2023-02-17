@@ -8,3 +8,18 @@ This was the second assignemnt on the course _API-Development_ at _Medieinstitut
 - NodeJS
 - MongoDB
 - ExpressJS
+
+### Routes
+
+**Products**
+
+- GET "/api/v1/products/", getAllProducts
+- GET "/api/v1/products/:productId", getProductById
+
+**Carts**
+
+- GET "/api/v1/carts/", getAllCarts
+- POST "/api/v1/carts/", createCart
+- POST "/api/v1/carts/:cartId", addItemToCart, (req.body = productId & quantity)
+- PUT "/api/v1/carts/:cartId", deleteItemFromCart, (req.body = productId & quantity)
+- DELETE "/api/v1/carts/:cartId", deleteCartById

@@ -7,10 +7,9 @@ exports.getAllCarts = async (req, res, nex) => {
   const totalCartsInDatabase = await Cart.countDocuments();
 
   return res.json({
-    data: carts,
+    carts: carts,
     meta: {
-      total: totalCartsInDatabase,
-      count: carts.length,
+      numberOfCarts: totalCartsInDatabase,
     },
   });
 };
@@ -66,7 +65,7 @@ exports.addItemToCart = async (req, res, next) => {
     items.push(productInfo);
   }
 
-  cart.totalAmount += productInfo.total * quantity;
+  cart.totalAmount += parseInt(productInfo.price * quantity);
 
   const updatedCart = await cart.save();
 
@@ -87,20 +86,24 @@ exports.deleteItemFromCart = async (req, res, next) => {
   const foundItem = items.find((item) => item.productId == productId);
   if (foundItem) {
     if (foundItem.quantity > 1) {
+      console.log(1);
+      console.log(foundItem);
       foundItem.quantity -= quantity;
       foundItem.total = foundItem.price * foundItem.quantity;
     } else {
+      console.log(2);
+      console.log(foundItem);
       items.splice(foundItem, 1);
     }
   } else {
     throw new NotFoundError("☠️ This product does not exist in this cart!");
   }
 
-  cart.totalAmount -= foundItem.price / quantity;
+  cart.totalAmount -= parseInt(foundItem.price / quantity);
 
   const updatedCart = await cart.save();
 
-  return res.status(201).json(updatedCart);
+  return res.status(200).json(updatedCart);
 };
 
 exports.deleteCartById = async (req, res, next) => {
